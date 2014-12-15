@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <mpi.h>
+#include "common.h"
+char send_buf[MAX_SIZE];
+
+int main(int argc, char **argv){
+  int i, me, target;
+  unsigned int size;
+  double t, t_max;
+  MPI_Win win;
+
+  MPI_Init(&argc, &argv);
+  MPI_Comm_rank(MPI_COMM_WORLD, &me);
+  MPI_Win_create(&send_buf, sizeof(char)*MAX_SIZE, 1, MPI_INFO_NULL, MPI_COMM_WORLD, &win);
+  MPI_Win_fence(0, win);
+  target = 1 - me;
+
+  init_buf(send_buf, me);
+
+  if(me==0) print_items();
+
+  for(size=1;size<MAX_SIZE+1;size*=2){
+    MPI_Barrier(MPI_COMM_WORLD);
+    for(i=0;i<LOOP+WARMUP;i++){
+      if(WARMUP == i)
+	t = wtime();
+
+      if(me == 0){
+	MPI_Get(send_buf, size, MPI_CHAR, target, 0, size, MPI_CHAR, win);	
+	MPI_Win_fence(0, win);
+	while(send_buf[0] == '0' || send_buf[size-1] == '0'){}  // no need 
+	send_buf[0] = '0'; send_buf[size-1] = '0';              // no need
+	MPI_Win_fence(0, win);
+      } 
+      else {
+	MPI_Win_fence(0, win);
+	MPI_Get(send_buf, size, MPI_CHAR, target, 0, size, MPI_CHAR, win);
+	MPI_Win_fence(0, win);
+	while(send_buf[0] == '1' || send_buf[size-1] == '1'){}  // no need
+	send_buf[0] = '1'; send_buf[size-1] = '1';              // no need
+      }
+
+    } //end of LOOP
+
+    t = wtime() - t;
+    MPI_Reduce(&t, &t_max, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+    if(me == 0)
+      print_results(size, t_max);
+  }
+
+  MPI_Win_free(&win);
+  MPI_Finalize();
+  return 0;
+}
