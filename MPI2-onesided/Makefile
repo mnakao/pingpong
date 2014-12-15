@@ -1,18 +1,17 @@
 CC=mpicc -O2 -I../common
-obj = put_mpi2.o common.o
 
-all: put_mpi2 get_mpi2
+all: mpi2_put mpi2_get
 
-put_mpi2: put_mpi2.o common.o
+mpi2_put: mpi2_put.o common.o
 	$(CC) -o $@ $^
 
-get_mpi2: get_mpi2.o common.o
+mpi2_get: mpi2_get.o common.o
 	$(CC) -o $@ $^
 
-put_mpi2.o: put_mpi2.c ../common/common.h
+mpi2_put.o: mpi2_put.c ../common/common.h
 	$(CC) -c $<
 
-get_mpi2.o: get_mpi2.c ../common/common.h
+mpi2_get.o: mpi2_get.c ../common/common.h
 	$(CC) -c $<
 
 common.o: ../common/common.c ../common/common.h

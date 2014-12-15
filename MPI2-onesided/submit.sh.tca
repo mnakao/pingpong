@@ -14,10 +14,9 @@
 #----------------
 module purge
 export MODULEPATH=/work/TCAPROF/hanawa/Modules:$MODULEPATH
-module load cuda/6.5  mvapich2/gdr-2.0-gnu-cuda6.5
+module load cuda/6.5 mvapich2/gdr-2.0-gnu-cuda6.5
 LD_LIBRARY_PATH=/opt/mellanox/fca/lib/:$LD_LIBRARY_PATH
 cd $PBS_O_WORKDIR
-#mpirun_rsh -np 2 -hostfile $PBS_NODEFILE MV2_NUM_PORTS=2 ./put_mpi2
-mpirun_rsh -np 2 -hostfile $PBS_NODEFILE MV2_NUM_PORTS=2 ./get_mpi2
-
-
+#mpirun_rsh -np 2 -hostfile $PBS_NODEFILE MV2_NUM_PORTS=2 ./mpi2_put
+#mpirun_rsh -np 2 -hostfile $PBS_NODEFILE MV2_NUM_PORTS=2 ./mpi2_get
+mpirun_rsh -np 2 -hostfile $PBS_NODEFILE ./mpi2_get
