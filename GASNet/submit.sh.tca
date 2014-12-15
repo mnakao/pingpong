@@ -1,0 +1,26 @@
+#PBS -S /bin/bash
+#PBS -N mnakao_job
+#PBS -A XMPTCA
+#PBS -q tcaq
+#PBS -l select=2:ncpus=1:mpiprocs=1
+#PBS -l walltime=00:01:00
+. /opt/Modules/default/init/bash
+#---------------
+# select=NODES:ncpus=CORES:mpiprocs=PROCS:ompthreads=THREADS:mem=MEMORY
+# NODES   : num of nodes
+# CORES   : num of cores per node
+# PROCS   : num of procs per node
+# THREADS : num of threads per process
+#----------------
+module purge
+export MODULEPATH=/work/TCAPROF/hanawa/Modules:$MODULEPATH
+module load cuda/6.5 mvapich2/gdr-2.0-gnu-cuda6.5
+LD_LIBRARY_PATH=/opt/mellanox/fca/lib/:$LD_LIBRARY_PATH
+cd $PBS_O_WORKDIR
+
+export GASNET_IBV_PORTS='mlx4_0:1,2'
+export GASNET_IB_SPAWNER="${GASNET_IBV_SPAWNER:-mpi}"
+export GASNET_IB_BOOTSTRAP_MPI=1
+export GASNET_IB_CONDUIT=IBV
+#mpirun -np 2 -hostfile $PBS_NODEFILE ./gasnet_put
+mpirun -np 2 -hostfile $PBS_NODEFILE ./gasnet_get
