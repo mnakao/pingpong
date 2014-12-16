@@ -43,14 +43,14 @@ int main(int argc, char **argv){
 
       if(me == 0){
 	gasnet_put_bulk(target, buf[target], buf[me], size);
-	GASNET_BLOCKUNTIL(buf[me][0] == '1');
-	GASNET_BLOCKUNTIL(buf[me][size-1] == '1');
+	while(buf[me][0] == '0') {gasnet_AMPoll();}
+	while(buf[me][size-1] == '0') {gasnet_AMPoll();}
         buf[me][0] = '0';
 	buf[me][size-1] = '0';
       } 
       else {
-	GASNET_BLOCKUNTIL(buf[me][0] == '0');
-	GASNET_BLOCKUNTIL(buf[me][size-1] == '0');
+	while(buf[me][0] == '1') {gasnet_AMPoll();}
+        while(buf[me][size-1] == '1') {gasnet_AMPoll();}
         buf[me][0] = '1'; 
 	buf[me][size-1] = '1';
 	gasnet_put_bulk(target, buf[target], buf[me], size);

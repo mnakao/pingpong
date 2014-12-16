@@ -22,5 +22,5 @@ export GASNET_IBV_PORTS='mlx4_0:1,2'
 export GASNET_IB_SPAWNER="${GASNET_IBV_SPAWNER:-mpi}"
 export GASNET_IB_BOOTSTRAP_MPI=1
 export GASNET_IB_CONDUIT=IBV
-#mpirun -np 2 -hostfile $PBS_NODEFILE ./gasnet_put
-mpirun -np 2 -hostfile $PBS_NODEFILE ./gasnet_get
+mpirun -np 2 -hostfile $PBS_NODEFILE ./gasnet_put
+#mpirun -np 2 -hostfile $PBS_NODEFILE ./gasnet_get
