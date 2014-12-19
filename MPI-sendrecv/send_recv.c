@@ -6,7 +6,7 @@ char send_buf[MAX_SIZE], recv_buf[MAX_SIZE];
 int main(int argc, char **argv){
   int i, me, target;
   unsigned int size;
-  double t, t_max;
+  double t;
   MPI_Status status;
 
   MPI_Init(&argc, &argv);
@@ -33,10 +33,11 @@ int main(int argc, char **argv){
 	MPI_Send(send_buf, size, MPI_CHAR, target, 5, MPI_COMM_WORLD);
       } 
     }
+
+    MPI_Barrier(MPI_COMM_WORLD);
     t = wtime() - t;
-    MPI_Reduce(&t, &t_max, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
     if(me == 0)
-      print_results(size, t_max);
+      print_results(size, t);
   }
 
   MPI_Finalize();

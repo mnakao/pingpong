@@ -1,0 +1,11 @@
+CC=mpifccpx
+FC=mpifrtpx
+LC=mpifrtpx
+
+all:
+	$(FC) -c -O2 pingpong_put.f90
+	$(CC) -c -O2 rdma_lib.c
+	$(LC) -o pingpong_put pingpong_put.o rdma_lib.o -O2
+ 
+clean:
+	rm -f *.o a.out submit-mpi.sh.o*

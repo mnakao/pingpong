@@ -19,6 +19,7 @@ void print_items(void)
 void print_results(unsigned int size, double t)
 {
   printf("%8d\t%17.0f\t%8.6f\n", size, size/t*LOOP*2, t);
+  fflush(stdout);
 }
 
 void init_buf(char buf[MAX_SIZE], int num)
