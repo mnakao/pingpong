@@ -17,9 +17,6 @@ export MODULEPATH=/work/TCAPROF/hanawa/Modules:$MODULEPATH
 module load cuda/6.5 mvapich2/gdr-2.0-gnu-cuda6.5
 LD_LIBRARY_PATH=/opt/mellanox/fca/lib/:$LD_LIBRARY_PATH
 cd $PBS_O_WORKDIR
-
-export GASNET_IBV_PORTS='mlx4_0:1,2'
-export GASNET_IB_SPAWNER="${GASNET_IBV_SPAWNER:-mpi}"
-export GASNET_IB_BOOTSTRAP_MPI=1
-export GASNET_IB_CONDUIT=IBV
-mpirun -np 2 -hostfile $PBS_NODEFILE ./xmp_get
+#mpirun_rsh -np 2 -hostfile $PBS_NODEFILE MV2_NUM_PORTS=2 ./mpi2_put
+#mpirun_rsh -np 2 -hostfile $PBS_NODEFILE ./mpi3_put
+mpirun_rsh -np 2 -hostfile $PBS_NODEFILE ./mpi3_get
