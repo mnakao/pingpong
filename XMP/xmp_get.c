@@ -20,7 +20,7 @@ int main(){
 
   if(me==1) print_items();
 
-  for(size=1;size<MAX_SIZE+1;size*=2){
+  for(size=4;size<MAX_SIZE+1;size*=2){ // size must be more than 4 when using Fujitsu RDMA
     xmp_sync_all(NULL);
     for(i=0;i<LOOP+WARMUP;i++){
       if(WARMUP == i)
