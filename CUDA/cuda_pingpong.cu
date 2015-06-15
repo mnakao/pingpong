@@ -20,7 +20,7 @@ int main(int argc, char** argv)
   init_buf(send_buf, me);
   init_buf(recv_buf, target);
   
-  double *send_buf_d, *recv_buf_d;
+  char *send_buf_d, *recv_buf_d;
   cudaMalloc((void **)&send_buf_d, MAX_SIZE);
   cudaMalloc((void **)&recv_buf_d, MAX_SIZE);
 
