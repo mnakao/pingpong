@@ -13,12 +13,12 @@ double wtime(void)
 
 void print_items(void)
 {
-  printf("    Size\tBandwidth(Byte/s)\t Time(s)\n");
+  printf("    Size\tBandwidth(Byte/s)\tTime(micro sec.)\n");
 }
 
 void print_results(unsigned int size, double t)
 {
-  printf("%8d\t%17.0f\t%8.6f\n", size, size/t*LOOP*2, t);
+  printf("%8d\t%17.2f\t%8.2f\n", size, size/t*LOOP*2/1000, t/LOOP*1000*1000/2);
   fflush(stdout);
 }
 
