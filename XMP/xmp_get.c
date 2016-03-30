@@ -28,26 +28,21 @@ int main(){
 
       if(me == 1){
         local_buf[0:size] = target_buf[0:size]:[target];
-	while(local_buf[0] == '1'){
-	  xmp_sync_memory(NULL);
-	}
-	while(local_buf[size-1] == '1'){
-	  xmp_sync_memory(NULL);
-	}
+	xmp_sync_memory(NULL);
+#ifdef DEBUG
+	if(local_buf[0] != '2' && local_buf[size-1] != '2') fprintf(stderr, "Error !\n");
 	local_buf[0] = '1'; local_buf[size-1] = '1';
+#endif
 	xmp_sync_all(NULL);
       }
       else{
 	xmp_sync_all(NULL);
 	local_buf[0:size] = target_buf[0:size]:[target];
 
-	while(local_buf[0] == '2'){
-          xmp_sync_memory(NULL);
-        }
-        while(local_buf[size-1] == '2'){
-          xmp_sync_memory(NULL);
-	}
-        local_buf[0] = '2'; local_buf[size-1] = '2';
+#ifdef DEBUG
+        if(local_buf[0] != '1' && local_buf[size-1] != '1') fprintf(stderr, "Error !\n");
+	local_buf[0] = '2'; local_buf[size-1] = '2';
+#endif
       }
       xmp_sync_all(NULL);
     }
