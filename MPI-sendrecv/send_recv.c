@@ -4,13 +4,16 @@
 char send_buf[MAX_SIZE], recv_buf[MAX_SIZE];
 
 int main(int argc, char **argv){
-  int i, me, target;
+  char processor_name[MPI_MAX_PROCESSOR_NAME];
+  int i, me, target, namelen;
   unsigned int size;
   double t;
   MPI_Status status;
 
   MPI_Init(&argc, &argv);
+  MPI_Get_processor_name(processor_name, &namelen);
   MPI_Comm_rank(MPI_COMM_WORLD, &me);
+  printf("Process %d on %s\n", me, processor_name);
   target = 1 - me;
 
   init_buf(send_buf, me);
